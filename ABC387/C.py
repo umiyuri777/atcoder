@@ -1,24 +1,45 @@
+
+
+
+
+
+"""
+わからあああああああああああああん
+"""
+
+
+
+
+
+
 def count_hebi_num(num):
     str_num = str(num)
     
     ans = 0
-    
-    # 9回
+
     # 最上位桁でならす
     tmp = []
+    
+    flag = False
+    start_digit = 99
     for i in range(1, len(str_num)):
-        if str_num[0] > str_num[i]:
-            tmp.append(int(str_num[i]) + 1)
+        if str_num[i] != 0 and flag == False:
+            start_digit = i
+            flag = True
         else:
-            tmp.append(int(str_num[0]))
-
+            if str_num[i] > str_num[0]:
+                tmp.append(int(str_num[0]))
+            else:
+                tmp.append(int(str_num[i])+ 1)
+    
     omake = 1
     for t in tmp:
         omake *= t
-    ans += omake
+    ans  += omake
     print("omake: ", omake)
+    ans += int(str_num[start_digit]) * int(str_num[0]) ** (len(str_num) - start_digit - 1)
 
-    # 8回
+
     # 桁を一つ下げる
     for i in range(1, int(str_num[0])):
         ans += i ** (len(str_num) - 1)
