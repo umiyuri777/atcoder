@@ -1,50 +1,25 @@
-from collections import defaultdict
-
 N = int(input())
 P = list(map(int, input().split()))
 
-count = 0
+ans = 0
 
-isNakama = defaultdict(int)
-isHazure = defaultdict(int)
+for i in range(N - 3):
+    a, b, c, d = P[i], P[i+1], P[i+2], P[i+3]
+    # 1. 先頭2つが昇順
+    if not (a < b):
+        continue
+    # 2. 山と谷の位置を調べる
+    # 山: x < y > z
+    # 谷: x > y < z
+    peak = 0
+    valley = 0
+    seq = [a, b, c, d]
+    for j in range(1, 3):
+        if seq[j-1] < seq[j] > seq[j+1]:
+            peak += 1
+        if seq[j-1] > seq[j] < seq[j+1]:
+            valley += 1
+    if peak == 1 and valley == 1:
+        ans += 1
 
-for left in range(N):
-    if left > 0 and left + 1 < N:
-        print(isNakama)
-        if isNakama[(P[left - 1], P[left], P[left + 1])] > 0:
-            isNakama[(P[left - 1], P[left], P[left + 1])] -= 1
-            
-            print((P[left - 1], P[left], P[left + 1]))
-            if isNakama[(P[left - 1], P[left], P[left + 1])] == 0:
-                del isNakama[(P[left - 1], P[left], P[left + 1])]
-
-        if isHazure[(P[left - 1], P[left], P[left + 1])] > 0:
-            isHazure[(P[left - 1], P[left], P[left + 1])] -= 1
-            
-            if isHazure[(P[left - 1], P[left], P[left + 1])] == 0:
-                del isHazure[(P[left - 1], P[left], P[left + 1])]
-            
-    for right in range(left + 2, N):
-        if P[left] >= P[left + 1]:
-            continue
-
-        if P[right - 2] < P[right - 1] > P[right]:
-            isNakama[(P[right - 2], P[right - 1], P[right])] += 1
-
-        if P[right - 2] > P[right - 1] < P[right]:
-            isHazure[(P[right - 2], P[right - 1], P[right])] += 1
-
-        if len(isNakama) == 1 and len(isHazure) == 1:
-            count += 1
-        #     print("left: ", left)
-        #     print("right: ", right)
-        #     print("isNakama: ", isNakama)
-        #     print("isHazure: ", isHazure)
-        # if left == 1 and right == 5:
-        #     print("left: ", left)
-        #     print("right: ", right)
-        #     print("isNakama: ", isNakama)
-        #     print("isHazure: ", isHazure)
-            
-
-print(count)
+print(ans)
